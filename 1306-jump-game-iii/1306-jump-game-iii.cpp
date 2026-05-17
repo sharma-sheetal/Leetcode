@@ -3,7 +3,7 @@ public:
 
     vector<int> visited;
 
-    bool solve(int i, int n, vector<int> &arr){
+    bool solve(int i, int n, vector<int> &arr, auto &dp){
 
         if(i>=n or i<0){
             cout<<"OUB"<<endl;
@@ -14,6 +14,9 @@ public:
             cout<<"REACHED"<<endl;
             return true;
         }
+
+        if(dp[i] == true)
+        return dp[i];
         
 
        
@@ -22,7 +25,7 @@ public:
         if(i+arr[i]<n and visited[i+arr[i]] == 0){
             cout<<"Step "<<i<<" -> ";
             visited[i+arr[i]] = 1;
-            right = solve(i+arr[i], n, arr);
+            right = solve(i+arr[i], n, arr, dp);
             visited[i+arr[i]] = 0;
         }       
 
@@ -32,11 +35,11 @@ public:
         if(i-arr[i]>=0 and visited[i-arr[i]] == 0){
             cout<<"Step "<<i<<" -> ";
             visited[i-arr[i]] = 1;
-            left = solve(i-arr[i], n, arr);
+            left = solve(i-arr[i], n, arr, dp);
             visited[i-arr[i]] = 0;
         }       
 
-        return right or left;
+        return dp[i] = right or left;
     }
 
 
@@ -48,6 +51,7 @@ public:
         for(int i=0; i<n; i++)
         visited.push_back(0);
 
-        return solve(start, n, arr);
+        vector<bool> dp(n, false);
+        return solve(start, n, arr, dp);
     }
 };
